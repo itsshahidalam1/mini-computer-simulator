@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-
-
-
 struct annotations
 {
     char instruction[15];
@@ -24,9 +21,6 @@ void produce_byte_code(struct annotations temp)
         return;
     }
 
-    char buff[20];
-
-    
     if(strcmp(temp.instruction , "Add")==0) operation = Add;
     else if(strcmp(temp.instruction , "Subtract")==0) operation = Subtract;
     else if(strcmp(temp.instruction , "Multiply")==0) operation = Multiply;
@@ -40,6 +34,7 @@ void produce_byte_code(struct annotations temp)
         fclose(f);
         return;
       }
+      
     if(operation == Read || operation == Write)
      fprintf(f,"%d %c %s %s\n",operation,temp.destination_Reg[1],temp.operand_1,temp.operand_2);
      else if(operation!=Move)
