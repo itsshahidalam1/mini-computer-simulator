@@ -53,9 +53,6 @@ void produce_byte_code(struct annotations temp)
 
 void parser(char tokens[10][20], int token_count)
 {
-
-    printf("Token Count: %d\n", token_count);
-
     struct annotations a1;
 
     if (token_count == 5)

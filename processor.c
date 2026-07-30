@@ -16,7 +16,8 @@ void reset()
 void fetch()
 {
     if (instruction_memory[PC] == 0)
-    {
+    {   
+        printf("\n****************Program executed successfully***************\n");
         end_of_simulation = 1;
         return;
     }
@@ -36,38 +37,6 @@ void execute()
 {
     if (end_of_simulation == 1)
         return;
-
-        // {
-            
-        // case 1:
-        //     Register[dest] = Register[src1] + Register[src2];
-    //     break;
-    // case 2:
-    //     Register[dest] = Register[src1] - Register[src2];
-    //     break;
-    // case 3:
-    //     Register[dest] = Register[src1] * Register[src2];
-    //     break;
-    // case 4:
-    
-    //     Register[dest] = Register[src1] / Register[src2];
-    //     break;
-    // case 5:
-
-    //     Register[dest] = data_memory[src1];
-    //     break;
-    // case 6:
-    //     data_memory[dest] = Register[src1];
-    //     break;
-    // case 7:
-    //     Register[dest] = src1;
-    //     break;
-    
-    // default:
-    //     printf("Invalid Operaiton!!!");
-    //     return;
-    //     break;
-    // }
     
     switch (opcode)
     {
@@ -98,7 +67,7 @@ void execute()
 
     case 6:
         printf("\n[EXECUTE] STORE MEM[%d] = R%d\n", dest, src1);
-        data_memory[dest] = Register[src1];
+        data_memory[src1] = Register[dest];
         break;
 
     case 7:
