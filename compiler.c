@@ -188,5 +188,8 @@ void compiler(char source[50])
         tokenize(line);
     };
 
+    fclose(fp);
+    fclose(OUT);
+
 
 }

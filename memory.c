@@ -7,6 +7,12 @@ unsigned char data_memory[256];
 
 void initialize(char inst[20], char data[20])
 {
+   for(int i = 0;i<256;i++){
+    instruction_memory[i] = 0;
+    data_memory[i]=0;
+    
+
+   }
 
     FILE *inst_File = fopen(inst, "r");
     if (inst_File == NULL)
@@ -34,6 +40,8 @@ void initialize(char inst[20], char data[20])
         }
         instruction_memory[i++] = (unsigned char)value;
     }
+    // instruction_memory[i]=' ';
+
 
     int address;
     while (fscanf(data_File, "%d %d", &address, &value) == 2)
@@ -52,6 +60,10 @@ void initialize(char inst[20], char data[20])
         data_memory[address] = (unsigned char)value;
     }
     
+
+    fclose(data_File);
+    fclose(inst_File);
+    
     printf("Data_memory :\n");
     for(int j=0;j<255;j++)
     {
@@ -63,6 +75,7 @@ void initialize(char inst[20], char data[20])
     {
         printf("%u",instruction_memory[j]);
     }
+
 };
 
 
