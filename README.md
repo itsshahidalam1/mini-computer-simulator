@@ -70,8 +70,6 @@ The project demonstrates fundamental concepts of **Computer Organization and Arc
 
 | Instruction | Description                           |
 | ----------- | ------------------------------------- |
-| LOAD        | Load data from memory into a register |
-| STORE       | Store register value into memory      |
 | ADD         | Addition                              |
 | SUB         | Subtraction                           |
 | MUL         | Multiplication                        |
