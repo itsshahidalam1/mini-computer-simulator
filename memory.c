@@ -1,6 +1,6 @@
 #include <stdio.h>
-char instruction[64][4];
-char data[256];
+unsigned char instruction[256];
+unsigned char data[256];
 
 void initialize(char inst[20], char data[20]){
   
@@ -17,34 +17,18 @@ void initialize(char inst[20], char data[20]){
         return;
     }
 
+    int value;
+    int i = 0;
 
+    while (i < 256 && fscanf(inst_File, "%d", &value) == 1) {
+        if (value < 0 || value > 255) {
+            printf("Invalid instruction byte: %d\n", value);
+            break;
+        }
+        instruction[i++] = (unsigned char)value;
+    }
+    
    
-  char inst_Buff[20];
-  char data_Buff[20];
-  int i = 0;
-  struct help {
-    int op;
-    int dest;
-    int operand1;
-    int operand2;
-
-  }h;
-
-   int p=0,q=0;
-
-  while(fgets(inst_Buff,sizeof(inst_Buff),inst_File)!=NULL)
-   {
-       for(int i=0;inst_Buff[i]!='\0';i++){
-          in
-
-       }
-
-
-   }
-    printf("%c",instruction[14]);
-
-
-
 
 
 
