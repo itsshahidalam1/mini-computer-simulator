@@ -1,6 +1,9 @@
-#include <stdio.h>
-unsigned char instruction[256];
-unsigned char data[256];
+
+#include<stdio.h>
+
+
+unsigned char instruction_memory[256];
+unsigned char data_memory[256];
 
 void initialize(char inst[20], char data[20])
 {
@@ -29,7 +32,7 @@ void initialize(char inst[20], char data[20])
             printf("Invalid instruction byte: %d\n", value);
             break;
         }
-        instruction[i++] = (unsigned char)value;
+        instruction_memory[i++] = (unsigned char)value;
     }
 
     int address;
@@ -46,12 +49,19 @@ void initialize(char inst[20], char data[20])
             continue;
         }
 
-        data[address] = (unsigned char)value;
+        data_memory[address] = (unsigned char)value;
     }
     
+    printf("Data_memory :\n");
     for(int j=0;j<255;j++)
     {
-        printf("%u",data[j]);
+        printf("%u",data_memory[j]);
+    }
+    printf("\ninstruction_memory :\n");
+
+    for(int j=0;j<255;j++)
+    {
+        printf("%u",instruction_memory[j]);
     }
 };
 
@@ -59,13 +69,3 @@ void initialize(char inst[20], char data[20])
 void finalize() {
 
 };
-
-void memory(char data_file[20])
-{
-}
-
-int main(int argc, char **argv)
-{
-
-    initialize(argv[1], argv[2]);
-}
