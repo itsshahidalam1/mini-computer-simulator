@@ -40,6 +40,7 @@ void initialize(char inst[20], char data[20])
         }
         instruction_memory[i++] = (unsigned char)value;
     }
+
     // instruction_memory[i]=' ';
 
 

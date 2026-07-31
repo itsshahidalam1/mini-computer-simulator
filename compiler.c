@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 struct annotations
 {
     char instruction[15];
-    char destination_Reg[3];
-    char operand_1[3];
-    char operand_2[3];
+    char destination_Reg[5];
+    char operand_1[5];
+    char operand_2[5];
 };
 
 void produce_byte_code(struct annotations temp)
@@ -36,19 +37,19 @@ void produce_byte_code(struct annotations temp)
       }
       
     if(operation == Read || operation == Write)
-     fprintf(f,"%d %c %s %s\n",operation,temp.destination_Reg[1],temp.operand_1,temp.operand_2);
+     fprintf(f,"%d %d %d %d\n",operation,atoi(temp.destination_Reg+1),atoi(temp.operand_1),atoi(temp.operand_2));
      else if(operation!=Move)
-     fprintf(f,"%d %c %c %c\n",operation,temp.destination_Reg[1],temp.operand_1[1],temp.operand_2[1]); 
+     fprintf(f,"%d %d %d %d\n",operation,atoi(temp.destination_Reg+1),atoi(temp.operand_1+1),atoi(temp.operand_2+1)); 
      else
-     fprintf(f,"%d %c %s %s\n",operation,temp.destination_Reg[1],temp.operand_1,temp.operand_2); 
-    fclose(f);
+     fprintf(f,"%d %d %d %d\n",operation,atoi(temp.destination_Reg+1),atoi(temp.operand_1),atoi(temp.operand_2)); 
+     fclose(f);
     
 
 }
 
 void parser(char tokens[10][20], int token_count)
 {
-    struct annotations a1;
+    struct annotations a1={0};
 
     if (token_count == 5)
     {

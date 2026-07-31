@@ -66,13 +66,13 @@ void execute()
         break;
 
     case 6:
-        printf("\n[EXECUTE] STORE MEM[%d] = R%d\n", dest, src1);
+        printf("\n[EXECUTE] STORE MEM[%d] = R%d\n", src1, dest);
         data_memory[src1] = Register[dest];
         break;
 
     case 7:
-        printf("\n[EXECUTE] MOV   R%d = %d\n", dest, src1);
-        Register[dest] = src1;
+        printf("\n[EXECUTE] MOV   R%d = R%d\n", dest, src1);
+        Register[dest] = Register[src1];
         break;
 
     default:
