@@ -1,1 +1,4 @@
-// Write your programs here.. after removing this line.. No empty lines and no extra spaces than required for now.
+Read x1 0
+Read x2 1
+x3 = x1 + x2
+Write x3 2
