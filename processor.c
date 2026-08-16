@@ -67,7 +67,7 @@ void execute()
 
     case 6:
         printf("\n[EXECUTE] STORE MEM[%d] = R%d\n", src1, dest);
-        data_memory[src1] = Register[dest];
+        data_memory[src1] = (unsigned char)Register[dest];
         break;
 
     case 7:

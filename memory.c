@@ -41,8 +41,6 @@ void initialize(char inst[20], char data[20])
         instruction_memory[i++] = (unsigned char)value;
     }
 
-    // instruction_memory[i]=' ';
-
 
     int address;
     while (fscanf(data_File, "%d %d", &address, &value) == 2)
@@ -52,7 +50,7 @@ void initialize(char inst[20], char data[20])
             printf("Invalid address: %d\n", address);
             continue;
         }
-        if (value < 0 || value > 255)
+        if ( value > 255)
         {
             printf("Invalid value %d\n", value);
             continue;
