@@ -1,188 +1,132 @@
 #include <stdio.h>
+#include <stdbool.h>
+#include <ctype.h>
 #include <string.h>
-#include <stdlib.h>
-struct annotations
+
+struct Label
 {
-    char instruction[15];
-    char destination_Reg[5];
-    char operand_1[5];
-    char operand_2[5];
+    char labelName[50];
+    int labelAddress;
 };
 
-void produce_byte_code(struct annotations temp)
+struct Label labels[256];
+
+void removeComments(char *source_line)
 {
-    FILE *f;
-    int operation;
-    f = fopen("program.byte", "a");
-    enum map {Add=1,Subtract,Multiply,Divide,Read,Write,Move};
-    if (f == NULL)
+    char *p = strchr(source_line, '%');
 
-    {
-        printf("Could not open file.\n");
-        return;
-    }
-
-    if(strcmp(temp.instruction , "Add")==0) operation = Add;
-    else if(strcmp(temp.instruction , "Subtract")==0) operation = Subtract;
-    else if(strcmp(temp.instruction , "Multiply")==0) operation = Multiply;
-    else if(strcmp(temp.instruction , "Divide")==0) operation = Divide;
-    else if(strcmp(temp.instruction , "Read")==0) operation = Read;
-    else if(strcmp(temp.instruction , "Write")==0) operation = Write;
-    else if(strcmp(temp.instruction,"Move")==0)  operation = Move;
-    else 
-      {
-        printf("Invalid Instruction!!");
-        fclose(f);
-        return;
-      }
-      
-    if(operation == Read || operation == Write)
-     fprintf(f,"%d %d %d %d\n",operation,atoi(temp.destination_Reg+1),atoi(temp.operand_1),atoi(temp.operand_2));
-     else if(operation!=Move)
-     fprintf(f,"%d %d %d %d\n",operation,atoi(temp.destination_Reg+1),atoi(temp.operand_1+1),atoi(temp.operand_2+1)); 
-     else
-     fprintf(f,"%d %d %d %d\n",operation,atoi(temp.destination_Reg+1),atoi(temp.operand_1),atoi(temp.operand_2)); 
-     fclose(f);
-    
-
+    if (p != NULL)
+        *p = '\0';
 }
 
-void parser(char tokens[10][20], int token_count)
+void trim(char *source_line)
 {
-    struct annotations a1={0};
+    int i = 0;
+    int j = strlen(source_line) - 1;
+    while (isspace(source_line[i]))
+        i++;
+    while ((isspace(source_line[j])))
+        j--;
+    source_line[j + 1] = '\0';
+    char trimmed[j - i + 2];
+    strcpy(trimmed, source_line + i);
+    strcpy(source_line, trimmed);
+}
 
-    if (token_count == 5)
+bool islabel(char *line)
+{
+    if (line[0] != '.')
+        return false;
+}
+
+bool firstPass(char source[50])
+{
+
+    FILE *input_file = fopen(source, "r");
+    if (input_file == NULL)
     {
-        char operation = tokens[3][0];
-
-        switch (operation)
-        {
-        case '+':
-            strcpy(a1.instruction, "Add");
-            strcpy(a1.destination_Reg, tokens[0]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, tokens[4]);
-
-            break;
-        case '-':
-            strcpy(a1.instruction, "Subtract");
-            strcpy(a1.destination_Reg, tokens[0]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, tokens[4]);
-
-            break;
-        case '*':
-            strcpy(a1.instruction, "Multiply");
-            strcpy(a1.destination_Reg, tokens[0]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, tokens[4]);
-
-            break;
-
-        case '/':
-            strcpy(a1.instruction, "Divide");
-            strcpy(a1.destination_Reg, tokens[0]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, tokens[4]);
-
-            break;
-
-        default:
-            break;
-        }
+        printf("Error: Could not open source file %s\n", source);
+        return false;
     }
 
-    else
+    char line[256];
+    int instAdd = 0;
+    int labelcount = 0;
+    while (fgets(line, sizeof(line), input_file) != NULL)
     {
-        int operation;
-    
-        if (strcmp(tokens[0],"Read")==0)
-            operation = 0;
-        else if (strcmp(tokens[0],"Write")==0)
-            operation = 1;
+        removeComments(line);
+        if (islabel(line))
+        {
+            strcpy(labels[labelcount].labelName, line + 1);
+            labels[labelcount].labelAddress = instAdd;
+            labelcount++;
+        }
         else
-            operation = 2;
 
-        switch (operation)
-        {
-        case 0:
-            strcpy(a1.instruction, "Read");
-            strcpy(a1.destination_Reg, tokens[1]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, "0");
-
-            break;
-        case 1:
-            strcpy(a1.instruction, "Write");
-            strcpy(a1.destination_Reg, tokens[1]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, "0");
-
-            break;
-        case 2:
-            strcpy(a1.instruction, "Move");
-            strcpy(a1.destination_Reg, tokens[0]);
-            strcpy(a1.operand_1, tokens[2]);
-            strcpy(a1.operand_2, "0");
-
-            break;
-
-        default:
-            break;
-        }
+            instAdd++;
     }
-
-    produce_byte_code(a1);
+    fclose(input_file);
+    return true;
 }
 
+char tokens[10][20];
 void tokenize(char *line)
-{
-    char tokens[10][20];
-    int i = 0, tokenCount = 0, charCount = 0;
-
-    for (; line[i] != '\0'; i++)
+{    
+    char temp[strlen(line)];
+    strcpy(temp, line);
+    int token_count =0;
+    char *token = strtok(temp," ,\0\n");
+    while(token != NULL)
     {
-        if (line[i] == ' ' || line[i] == '\n')
-        {
-            tokens[tokenCount][charCount] = '\0';
-            tokenCount++;
-            charCount = 0;
-        }
-        else
-        {  
-            tokens[tokenCount][charCount++] = line[i];
-        }
+        strcpy(tokens[token_count++],token);
+         token = strtok(NULL," ,\0\n");
     }
-    parser(tokens, tokenCount);
+
 }
 
-void compiler(char source[50])
+bool secondPass(char *source)
 {
-   char line[100];
-
-    FILE *fp;
-    fp = fopen(source, "r");
-
-    if (fp == NULL)
+    FILE *input_file = fopen(source, "r");
+    if (input_file == NULL)
     {
-        printf("Error opening file!\n");
-        return;
+        printf("Error: Could not open source file %s\n", source);
+        return false;
     }
 
-    FILE *OUT = fopen("program.byte", "w");
-    if (OUT == NULL)
+    FILE *output_file = fopen("program.byte", "w");
+    if (output_file == NULL)
     {
-        printf("Error opening the output file!\n");
-        return;
+        printf("Error: Could not open source file %s\n", source);
+        return false;
     }
 
-    while (fgets(line, sizeof(line), fp) != NULL)
+    char line[256];
+    while (fgets(line, sizeof(line), input_file) != NULL)
     {
+        removeComments(line);
+        trim(line);
         tokenize(line);
-    };
+        parse (tokens);
+        
+    }
 
-    fclose(fp);
-    fclose(OUT);
+    fclose(input_file);
+    fclose(output_file);
+    return true;
+}
 
+void compiler(char *source)
+{
 
+    if (!firstPass(source))
+    {
+        printf("Compilation failed: Syntax error in source code.\n");
+        return;
+    }
+
+    if (!secondPass(source))
+    {
+        printf("Compilation failed: Semantic error in source code.\n");
+        return;
+    }
 }
