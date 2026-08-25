@@ -1,0 +1,77 @@
+label loopback
+ and labelAdd 4
+label exit
+ and labelAdd 12
+label  and labelAdd 0
+label  and labelAdd 0
+x1
+=
+0
+token count: 3
+x2
+=
+0
+token count: 3
+x3
+=
+0
+token count: 3
+x4
+=
+[x3]
+token count: 3
+.loopback
+token count: 1
+x255
+=
+[10];
+token count: 3
+x15
+=
+x1
+-
+x4
+token count: 5
+BEQ
+.exit
+token count: 2
+x3
+=
+x3
++
+4
+token count: 5
+x6
+=
+[x3]
+token count: 3
+x2
+=
+x2
++
+x6
+token count: 5
+x1
+=
+x1
++
+1
+token count: 5
+BAL
+.loopback
+token count: 2
+.exit
+token count: 1
+[x3]
+=
+x2
+token count: 3
+[x4]
+=
+10
+token count: 3
+Compiling Memory Read
+Compiling Memory Read
+Compiling Memory Read
+Compiling Memory Write
+Compiling Memory Write
