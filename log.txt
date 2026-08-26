@@ -1,9 +1,5 @@
-label loopback
- and labelAdd 4
-label exit
- and labelAdd 12
-label  and labelAdd 0
-label  and labelAdd 0
+label loopback and labelAdd 4
+label exit and labelAdd 11
 x1
 =
 0
@@ -22,10 +18,6 @@ x4
 token count: 3
 .loopback
 token count: 1
-x255
-=
-[10];
-token count: 3
 x15
 =
 x1
@@ -66,12 +58,11 @@ token count: 1
 =
 x2
 token count: 3
-[x4]
-=
-10
-token count: 3
+Compiling Data movement
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
+Compiling Branch Instruction
 Compiling Memory Read
-Compiling Memory Read
-Compiling Memory Write
+Compiling Branch Instruction
 Compiling Memory Write

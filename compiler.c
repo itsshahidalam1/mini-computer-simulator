@@ -14,10 +14,10 @@ struct Label labels[256];
 
 void removeComments(char *source_line)
 {
-    char *p = strchr(source_line, '%');
+    char *z = strchr(source_line, '%');
 
-    if (p != NULL)
-        *p = '\0';
+    if (z != NULL)
+        *z = '\0';
 }
 
 void trim(char *source_line)
@@ -57,6 +57,7 @@ bool firstPass(char source[50])
     while (fgets(line, sizeof(line), input_file) != NULL)
     {
         removeComments(line);
+        trim(line);
         if (islabel(line))
         {
             strcpy(labels[labelcount].labelName, line + 1);
@@ -71,7 +72,7 @@ bool firstPass(char source[50])
     // ======== Printing label table to log file ================ //
     FILE *log = fopen("log.txt", "w");
 
-    for (int i = 0; i < sizeof(log); i++)
+    for (int i = 0; i < labelcount; i++)
         fprintf(log, "label %s and labelAdd %d\n", labels[i].labelName, labels[i].labelAddress);
     fclose(log);
     fclose(input_file);
@@ -124,7 +125,7 @@ int getRegisterNumber(char *reg)
         return atoi(buff);
     }
 
-    return atoi(reg+1);
+    return atoi(reg + 1);
 }
 
 enum map
@@ -156,9 +157,57 @@ struct operationMap operations[] = {{"ADD", ADD},
 
 bool isConstant(char *temp)
 {
-    if (temp[1] == 'x' || temp[0]=='x')
+    if (temp[1] == 'x' || temp[0] == 'x')
         return false;
     return true;
+}
+
+struct branchSuffix
+{
+    const char *Suffix;
+     char *code;
+};
+
+struct branchSuffix bMap[] = {
+    {"EQ", "0000"},
+    {"NE", "0001"},
+    {"CS", "0010"},
+    {"CC", "0011"},
+    {"MI", "0100"},
+    {"PL", "0101"},
+    {"VS", "0110"},
+    {"VC", "0111"},
+    {"HI", "1000"},
+    {"LS", "1001"},
+    {"GE", "1010"},
+    {"LT", "1011"},
+    {"GT", "1100"},
+    {"LE", "1101"},
+    {"AL", "1110"}};
+
+int binaryToInt(char *binary)
+{
+    int value = 0;
+
+    for (int i = 0; binary[i] != '\0'; i++)
+        value = value * 2 + (binary[i] - '0');
+
+    return value;
+}
+int getBranchCode(char *t)
+{
+    int index = -1;
+    for (int i = 0; i < sizeof(bMap) / sizeof(bMap[0]); i++)
+    {
+
+        if (strcmp(bMap[i].Suffix, t) == 0)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    return 0x10 + binaryToInt(bMap[index].code);
 }
 
 int getOpcode(char *Operatn)
@@ -198,10 +247,14 @@ int getOpcode(char *Operatn)
         return isConstant(tokens[2]) ? 0x0E : 0x06;
         break;
 
-    case DATA_MOVEMENT:;
+    case DATA_MOVEMENT:
+        fprintf(log, "Compiling Data movement\n");
+        return isConstant(tokens[2]) ? 0x0F : 0x07;
         break;
 
-    case BRANCH:;
+    case BRANCH:
+        fprintf(log, "Compiling Branch Instruction\n");
+        return getBranchCode(tokens[0] + 1);
         break;
 
     default:
@@ -248,7 +301,26 @@ int getOperand(char *p)
 
         return atoi(p + 1);
     }
+
+    else
+        return atoi(p);
 }
+
+int getOffset(char p[10], int inADD)
+{
+    
+    for (int i = 0; i < sizeof(labels) / sizeof(labels[0]); i++)
+    {
+        if (strcmp(p, labels[i].labelName) == 0)
+        {   
+            printf("inADD: %d labelADD: %d offset: %d\n",inADD,labels[i].labelAddress,labels[i].labelAddress - inADD + 1);
+            return (labels[i].labelAddress - inADD + 1);
+        }
+    }
+    return -1;
+};
+
+// token_count = 3
 
 void compile_Memory_Read(FILE *target)
 {
@@ -261,7 +333,8 @@ void compile_Memory_Read(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[2]);
 
-    printf("writing into program.byte file\n");
+    printf("writing MEM R into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
@@ -276,12 +349,37 @@ void compile_Memory_Write(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[2]);
 
-    printf("writing into program.byte file\n");
+    printf("writing MEMEORY W into program.byte file\n");
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
 void compile_Data_Movement(FILE *target)
 {
+    annotate.opcode = getOpcode("DATA_MOVEMENT");
+
+    annotate.dest = getRegisterNumber(tokens[0]);
+
+    annotate.operand_1 = 0x00;
+
+    annotate.operand_2 = getOperand(tokens[2]);
+
+    printf("writing Data Movement into program.byte file\n");
+    fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
+}
+
+// token_count = 2
+void compile_Branch_Instruction(FILE *target, int inADD)
+{
+    annotate.opcode = getOpcode("BRANCH");
+
+    annotate.dest = 0x00;
+
+    annotate.operand_1 = 0x00;
+
+    annotate.operand_2 = getOffset(tokens[1]+1, inADD);
+
+    printf("writing Branch Instruction into program.byte file\n");
+    fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2 & 0xFF);
 }
 
 bool secondPass(char *source)
@@ -300,14 +398,17 @@ bool secondPass(char *source)
         return false;
     }
 
+    int inADD = 0;
     char line[256];
     while (fgets(line, sizeof(line), input_file) != NULL)
     {
         removeComments(line);
         trim(line);
         tokenize(line);
+        if (tokens[0][0] != '.')
+            inADD++;
 
-        if (token_count == 3)
+        if (token_count == 3) // I still have to write legacy read and write here only.
         {
 
             if (tokens[2][0] == '[')
@@ -318,6 +419,12 @@ bool secondPass(char *source)
 
             else
                 compile_Data_Movement(output_file);
+        }
+
+        else if (token_count == 2)
+        { // Branch insturctions
+
+            compile_Branch_Instruction(output_file, inADD);
         }
     }
 
