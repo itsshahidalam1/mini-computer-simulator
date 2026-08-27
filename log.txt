@@ -62,7 +62,11 @@ Compiling Data movement
 Compiling Data movement
 Compiling Data movement
 Compiling Memory Read
+Compiling Subtraction
 Compiling Branch Instruction
+Compiling Addition
 Compiling Memory Read
+Compiling Addition
+Compiling Addition
 Compiling Branch Instruction
 Compiling Memory Write

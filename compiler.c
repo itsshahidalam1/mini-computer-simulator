@@ -165,7 +165,7 @@ bool isConstant(char *temp)
 struct branchSuffix
 {
     const char *Suffix;
-     char *code;
+    char *code;
 };
 
 struct branchSuffix bMap[] = {
@@ -221,20 +221,28 @@ int getOpcode(char *Operatn)
             break;
         }
     }
+
     FILE *log = fopen("log.txt", "a");
+
     switch (exp)
     {
-    case ADD:;
+    case ADD:
+        fprintf(log, "Compiling Addition\n");
+        return isConstant(tokens[4]) ? 0x09 : 0x01;
         break;
 
-    case SUBTRACT:;
+    case SUBTRACT:
+        fprintf(log, "Compiling Subtraction\n");
+        return isConstant(tokens[4]) ? 0x0A : 0x02;
         break;
-
-    case MULTIPLY:;
+    case MULTIPLY:
+        fprintf(log, "Compiling multiplication\n");
+        return isConstant(tokens[4]) ? 0x0B : 0x03;
         break;
 
     case DIVIDE:
-
+        fprintf(log, "Compiling Division\n");
+        return isConstant(tokens[4]) ? 0x0C : 0x04;
         break;
 
     case MEMORY_READ:
@@ -308,12 +316,12 @@ int getOperand(char *p)
 
 int getOffset(char p[10], int inADD)
 {
-    
+
     for (int i = 0; i < sizeof(labels) / sizeof(labels[0]); i++)
     {
         if (strcmp(p, labels[i].labelName) == 0)
-        {   
-            printf("inADD: %d labelADD: %d offset: %d\n",inADD,labels[i].labelAddress,labels[i].labelAddress - inADD + 1);
+        {
+            printf("inADD: %d labelADD: %d offset: %d\n", inADD, labels[i].labelAddress, labels[i].labelAddress - inADD + 1);
             return (labels[i].labelAddress - inADD + 1);
         }
     }
@@ -370,16 +378,72 @@ void compile_Data_Movement(FILE *target)
 // token_count = 2
 void compile_Branch_Instruction(FILE *target, int inADD)
 {
+
     annotate.opcode = getOpcode("BRANCH");
 
     annotate.dest = 0x00;
 
     annotate.operand_1 = 0x00;
 
-    annotate.operand_2 = getOffset(tokens[1]+1, inADD);
+    annotate.operand_2 = getOffset(tokens[1] + 1, inADD);
 
     printf("writing Branch Instruction into program.byte file\n");
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2 & 0xFF);
+}
+
+// token_count = 5
+struct arithmaticOP
+{
+    char *symbol;
+    int op;
+};
+struct arithmaticOP arithmaticMap[] =
+    {
+        {"+", 1},
+        {"-", 2},
+        {"*", 3},
+        {"/", 4},
+};
+
+void compile_Arithmetic_Instruction(FILE *target)
+{
+    int op;
+    for (int i = 0; i < sizeof(arithmaticMap) / sizeof(arithmaticMap[0]); i++)
+    {
+
+        if (strcmp(arithmaticMap[i].symbol, tokens[3]) == 0)
+        {
+            op = arithmaticMap[i].op;
+            break;
+        }
+    }
+
+    switch (op)
+    {
+
+    case 1:
+        annotate.opcode = getOpcode("ADD");
+        break;
+
+    case 2:
+        annotate.opcode = getOpcode("SUBTRACT");
+        break;
+    case 3:
+        annotate.opcode = getOpcode("MULTIPLY");
+        break;
+    case 4:
+        annotate.opcode = getOpcode("DIVIDE");
+        break;
+    }
+
+    annotate.dest = getRegisterNumber(tokens[0]);
+
+    annotate.operand_1 = getOperand(tokens[2]);
+
+    annotate.operand_2 = getOperand(tokens[4]);
+
+    printf("writing Arithmetic Instruction into program.byte file\n");
+    fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
 bool secondPass(char *source)
@@ -405,6 +469,7 @@ bool secondPass(char *source)
         removeComments(line);
         trim(line);
         tokenize(line);
+        
         if (tokens[0][0] != '.')
             inADD++;
 
@@ -425,6 +490,12 @@ bool secondPass(char *source)
         { // Branch insturctions
 
             compile_Branch_Instruction(output_file, inADD);
+        }
+
+        else if (token_count == 5)
+        { // Arithmetic instructions
+
+            compile_Arithmetic_Instruction(output_file);
         }
     }
 
