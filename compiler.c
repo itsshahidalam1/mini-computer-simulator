@@ -130,14 +130,19 @@ int getRegisterNumber(char *reg)
 
 enum map
 {
-    ADD = 1,
+    ADD,
     SUBTRACT,
     MULTIPLY,
     DIVIDE,
+    V_ADD,
+    V_SUBTRACT,
+    V_MULTIPLY,
     MEMORY_READ,
     MEMORY_WRITE,
     DATA_MOVEMENT,
-    BRANCH
+    BRANCH,
+    V_READ,
+    V_WRITE
 };
 
 struct operationMap
@@ -150,10 +155,15 @@ struct operationMap operations[] = {{"ADD", ADD},
                                     {"SUBTRACT", SUBTRACT},
                                     {"MULTIPLY", MULTIPLY},
                                     {"DIVIDE", DIVIDE},
+                                    {"VECTOR_ADD", V_ADD},
+                                    {"VECTOR_SUBTRACT", V_SUBTRACT},
+                                    {"VECTOR_MULTIPLY", V_MULTIPLY},
                                     {"MEMORY_READ", MEMORY_READ},
                                     {"MEMORY_WRITE", MEMORY_WRITE},
                                     {"DATA_MOVEMENT", DATA_MOVEMENT},
-                                    {"BRANCH", BRANCH}};
+                                    {"BRANCH", BRANCH},
+                                    {"VECTOR_READ", V_READ},
+                                    {"VECTOR_WRITE", V_WRITE}};
 
 bool isConstant(char *temp)
 {
@@ -210,6 +220,13 @@ int getBranchCode(char *t)
     return 0x10 + binaryToInt(bMap[index].code);
 }
 
+bool isVConstant(char v[10])
+{
+    if (v[0] == 'v')
+        return false;
+    return true;
+}
+
 int getOpcode(char *Operatn)
 {
     int exp = -1;
@@ -239,6 +256,20 @@ int getOpcode(char *Operatn)
         fprintf(log, "Compiling multiplication\n");
         return isConstant(tokens[4]) ? 0x0B : 0x03;
         break;
+    
+    case V_ADD:
+        fprintf(log, "Compiling Addition\n");
+        return isVConstant(tokens[4]) ? 0x29 : 0x21;
+        break;
+
+    case V_SUBTRACT:
+        fprintf(log, "Compiling Subtraction\n");
+        return isVConstant(tokens[4]) ? 0x2A : 0x22;
+        break;
+    case V_MULTIPLY:
+        fprintf(log, "Compiling multiplication\n");
+        return isVConstant(tokens[4]) ? 0x2B : 0x23;
+        break;
 
     case DIVIDE:
         fprintf(log, "Compiling Division\n");
@@ -247,7 +278,7 @@ int getOpcode(char *Operatn)
 
     case MEMORY_READ:
         fprintf(log, "Compiling Memory Read\n");
-        return isConstant(tokens[2]) ? 0x0C : 0x05;
+        return isConstant(tokens[2]) ? 0x0D : 0x05;
         break;
 
     case MEMORY_WRITE:
@@ -265,6 +296,14 @@ int getOpcode(char *Operatn)
         return getBranchCode(tokens[0] + 1);
         break;
 
+    case V_READ:
+        fprintf(log, "Compiling Vector Read Instruction\n");
+        return isConstant(tokens[2]) ? 0x2C : 0x25;
+        break;
+    case V_WRITE:
+        fprintf(log, "Compiling Vector Write Instruction\n");
+        return isVConstant(tokens[2]) ? 0x2E : 0x26;
+        break;
     default:
         printf("Invalid operation\n");
         break;
@@ -304,13 +343,13 @@ int getOperand(char *p)
         }
     }
 
-    else if (p[0] == 'x')
+    else if (p[0] == 'x' || p[0] == 'v' || p[0] == 'i')
     {
 
         return atoi(p + 1);
     }
 
-    else
+    else 
         return atoi(p);
 }
 
@@ -446,6 +485,75 @@ void compile_Arithmetic_Instruction(FILE *target)
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
+// Vector operations:
+void compile_Vector_Read(FILE *target)
+{
+    annotate.opcode = getOpcode("VECTOR_READ");
+
+    annotate.dest = getRegisterNumber(tokens[0]);
+
+    annotate.operand_1 = 0x00;
+
+    annotate.operand_2 = getOperand(tokens[2]);
+    printf("writing vector read into program.byte file\n");
+    fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
+}
+
+void compile_Vector_Write(FILE *target)
+{
+
+    annotate.opcode = getOpcode("VECTOR_WRITE");
+
+    annotate.dest = getRegisterNumber(tokens[0]);
+
+    annotate.operand_1 = 0x00;
+
+    annotate.operand_2 = getOperand(tokens[2]);
+    printf("writing vector write into program.byte file\n");
+    fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
+}
+// Vector Arithmetic operations
+void compile_Vector_Arithmetic_Instruction(FILE *target)
+{
+    int op;
+    for (int i = 0; i < sizeof(arithmaticMap) / sizeof(arithmaticMap[0]); i++)
+    {
+
+        if (strcmp(arithmaticMap[i].symbol, tokens[3]) == 0)
+        {
+            op = arithmaticMap[i].op;
+            break;
+        }
+    }
+
+    switch (op)
+    {
+
+    case 1:
+        annotate.opcode = getOpcode("VECTOR_ADD");
+        break;
+
+    case 2:
+        annotate.opcode = getOpcode("VECTOR_SUBTRACT");
+        break;
+    case 3:
+        annotate.opcode = getOpcode("VECTOR_MULTIPLY");
+        break;
+    case 4:
+        printf("Divide Operation is not supported for vectors \n");
+        break;
+    }
+
+    annotate.dest = getRegisterNumber(tokens[0]);
+
+    annotate.operand_1 = getOperand(tokens[2]);
+
+    annotate.operand_2 = getOperand(tokens[4]);
+
+    printf("writing Arithmetic Instruction into program.byte file\n");
+    fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
+}
+
 bool secondPass(char *source)
 {
     FILE *input_file = fopen(source, "r");
@@ -469,7 +577,7 @@ bool secondPass(char *source)
         removeComments(line);
         trim(line);
         tokenize(line);
-        
+
         if (tokens[0][0] != '.')
             inADD++;
 
@@ -477,10 +585,23 @@ bool secondPass(char *source)
         {
 
             if (tokens[2][0] == '[')
-                compile_Memory_Read(output_file);
+
+            {
+                if (tokens[0][0] == 'x')
+                    compile_Memory_Read(output_file);
+                else if (tokens[0][0] == 'v')
+                    compile_Vector_Read(output_file);
+                else
+                    return false;
+            }
 
             else if (tokens[0][0] == '[')
-                compile_Memory_Write(output_file);
+            {
+                if (tokens[2][0] == 'v' || tokens[2][0] == 'i')
+                    compile_Vector_Write(output_file);
+                else
+                    compile_Memory_Write(output_file);
+            }
 
             else
                 compile_Data_Movement(output_file);
@@ -494,8 +615,12 @@ bool secondPass(char *source)
 
         else if (token_count == 5)
         { // Arithmetic instructions
-
-            compile_Arithmetic_Instruction(output_file);
+            if (tokens[0][0] == 'x')
+                compile_Arithmetic_Instruction(output_file);
+            else if (tokens[0][0] == 'v')
+                compile_Vector_Arithmetic_Instruction(output_file);
+            else
+                return false;
         }
     }
 
