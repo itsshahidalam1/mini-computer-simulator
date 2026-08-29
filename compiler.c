@@ -554,7 +554,7 @@ void compile_Vector_Arithmetic_Instruction(FILE *target)
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
-bool secondPass(char *source)
+bool secondPass(char *source,char *target)
 {
     FILE *input_file = fopen(source, "r");
     if (input_file == NULL)
@@ -563,7 +563,7 @@ bool secondPass(char *source)
         return false;
     }
 
-    FILE *output_file = fopen("program.byte", "w");
+    FILE *output_file = fopen(target, "w");
     if (output_file == NULL)
     {
         printf("Error: Could not open source file %s\n", source);
@@ -629,7 +629,7 @@ bool secondPass(char *source)
     return true;
 }
 
-void compiler(char *source)
+void compiler(char *source,char *target)
 {
 
     if (!firstPass(source))
@@ -638,7 +638,7 @@ void compiler(char *source)
         return;
     }
 
-    if (!secondPass(source))
+    if (!secondPass(source,target))
     {
         printf("Compilation failed: Semantic error in source code.\n");
         return;

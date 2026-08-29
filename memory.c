@@ -1,17 +1,14 @@
 
 #include<stdio.h>
 
-
 unsigned char instruction_memory[256];
-unsigned char data_memory[256];
+unsigned char data_memory[4096];
 
 void initialize(char inst[20], char data[20])
 {
-   for(int i = 0;i<256;i++){
+    for(int i = 0;i<256;i++){
     instruction_memory[i] = 0;
     data_memory[i]=0;
-    
-
    }
 
     FILE *inst_File = fopen(inst, "r");
@@ -31,7 +28,7 @@ void initialize(char inst[20], char data[20])
     int value;
     int i = 0;
 
-    while (i < 256 && fscanf(inst_File, "%d", &value) == 1)
+    while (i < 256 && fscanf(inst_File, "%x", &value) == 1)
     {
         if (value < 0 || value > 255)
         {
@@ -42,10 +39,10 @@ void initialize(char inst[20], char data[20])
     }
 
 
-    int address;
-    while (fscanf(data_File, "%d %d", &address, &value) == 2)
+    int address = 0;
+    while (fscanf(data_File, "%x", &value) == 1)
     {
-        if (address < 0 || address >= 256)
+        if (address < 0 || address >= 4096)
         {
             printf("Invalid address: %d\n", address);
             continue;
@@ -56,7 +53,7 @@ void initialize(char inst[20], char data[20])
             continue;
         }
 
-        data_memory[address] = (unsigned char)value;
+        data_memory[address++] = (unsigned char)value;
     }
     
 
