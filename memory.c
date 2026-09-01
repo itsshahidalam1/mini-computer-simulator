@@ -65,9 +65,9 @@ void initialize(char inst[20], char data[20])
 void finalize() {
         FILE *data = fopen("data.byte","w");
         int i=0;
-        while(i<256){
-            fprintf(data,"%d %d\n",i,data_memory[i]);
-            i++;
-        }
+        for (int i = 0; i < 4096; i = i + 4)
+    {
+        fprintf(data, "%02X %02X %02X %02X\n", data_memory[i], data_memory[i + 1], data_memory[i + 2], data_memory[i + 3]);
+    }
         fclose(data);
 };
