@@ -1,14 +1,19 @@
-x1 = 0       % index
-x2 = 0        % sum
-x3 = 0        % array address
-x4 =  [x3]    %  read the size of array
-.loopback
-x15 = x1 - x4   % compare
-BEQ .exit  
-x3 = x3 + 4    % increase the address   
-x6 =  [x3]       % load the array data
-x2 = x2 + x6  % update sum 
-x1 = x1 + 1    % increment index
-BAL .loopback
+x1 = [0]  %Number of elemetns (N)
+x2 = 0   %Sum
+x8 = 4
+v1 = [x8]  %Weight Vector
+x4 = 36 %starting index of the elemetns
+v2 = [x4]
+v3 = v1 * v2
+[x4] = v3
+x7 = 0 %counter
+.loop
+x5  = x7 - 8
+BEQ .exit
+x6 = [x4]
+x2 = x2 + x6
+x4 = x4 + 4
+x7 = x7 + 1
+BAL .loop
 .exit
-[x3] = x2
+[x4] = x2
