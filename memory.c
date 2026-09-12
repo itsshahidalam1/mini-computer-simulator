@@ -1,15 +1,16 @@
+#include "processor.h"
+#include <stdio.h>
 
-#include<stdio.h>
+unsigned char instruction_memory[NP][256];
+unsigned char data_memory[NP][4096];
 
-unsigned char instruction_memory[256];
-unsigned char data_memory[4096];
-
-void initialize(char inst[20], char data[20])
+void initialize(char inst[20], char data[20], int processorID)
 {
-    for(int i = 0;i<256;i++){
-    instruction_memory[i] = 0;
-    data_memory[i]=0;
-   }
+    for (int i = 0; i < 256; i++)
+    {
+        instruction_memory[processorID][i] = 0;
+        data_memory[processorID][i] = 0;
+    }
 
     FILE *inst_File = fopen(inst, "r");
     if (inst_File == NULL)
@@ -35,9 +36,8 @@ void initialize(char inst[20], char data[20])
             printf("Invalid instruction byte: %d\n", value);
             break;
         }
-        instruction_memory[i++] = (unsigned char)value;
+        instruction_memory[processorID][i++] = (unsigned char)value;
     }
-
 
     int address = 0;
     while (fscanf(data_File, "%x", &value) == 1)
@@ -47,27 +47,26 @@ void initialize(char inst[20], char data[20])
             printf("Invalid address: %d\n", address);
             continue;
         }
-        if ( value > 255)
+        if (value > 255)
         {
             printf("Invalid value %d\n", value);
             continue;
         }
 
-        data_memory[address++] = (unsigned char)value;
+        data_memory[processorID][address++] = (unsigned char)value;
     }
-    
 
     fclose(data_File);
     fclose(inst_File);
 };
 
-
-void finalize() {
-        FILE *data = fopen("data.byte","w");
-        int i=0;
-        for (int i = 0; i < 4096; i = i + 4)
+void finalize(int process,char *dataFile)
+{
+    FILE *data = fopen(dataFile, "w");
+    int i = 0;
+    for (int i = 0; i < 4096; i = i + 4)
     {
-        fprintf(data, "%02X %02X %02X %02X\n", data_memory[i], data_memory[i + 1], data_memory[i + 2], data_memory[i + 3]);
+        fprintf(data, "%02X %02X %02X %02X\n", data_memory[process][i], data_memory[process][i + 1], data_memory[process][i + 2], data_memory[process][i + 3]);
     }
-        fclose(data);
+    fclose(data);
 };

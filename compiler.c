@@ -360,7 +360,6 @@ int getOffset(char p[10], int inADD)
     {
         if (strcmp(p, labels[i].labelName) == 0)
         {
-            printf("inADD: %d labelADD: %d offset: %d\n", inADD, labels[i].labelAddress, labels[i].labelAddress - inADD + 1);
             return (labels[i].labelAddress - inADD + 1);
         }
     }
@@ -380,7 +379,7 @@ void compile_Memory_Read(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[2]);
 
-    printf("writing MEM R into program.byte file\n");
+
 
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
@@ -396,7 +395,7 @@ void compile_Memory_Write(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[2]);
 
-    printf("writing MEMEORY W into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
@@ -410,7 +409,7 @@ void compile_Data_Movement(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[2]);
 
-    printf("writing Data Movement into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
@@ -426,7 +425,7 @@ void compile_Branch_Instruction(FILE *target, int inADD)
 
     annotate.operand_2 = getOffset(tokens[1] + 1, inADD);
 
-    printf("writing Branch Instruction into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2 & 0xFF);
 }
 
@@ -481,7 +480,7 @@ void compile_Arithmetic_Instruction(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[4]);
 
-    printf("writing Arithmetic Instruction into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
@@ -495,7 +494,7 @@ void compile_Vector_Read(FILE *target)
     annotate.operand_1 = 0x00;
 
     annotate.operand_2 = getOperand(tokens[2]);
-    printf("writing vector read into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 
@@ -509,7 +508,7 @@ void compile_Vector_Write(FILE *target)
     annotate.operand_1 = 0x00;
 
     annotate.operand_2 = getOperand(tokens[2]);
-    printf("writing vector write into program.byte file\n");
+
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 // Vector Arithmetic operations
@@ -550,7 +549,7 @@ void compile_Vector_Arithmetic_Instruction(FILE *target)
 
     annotate.operand_2 = getOperand(tokens[4]);
 
-    printf("writing Arithmetic Instruction into program.byte file\n");
+  
     fprintf(target, "%02X %02X %02X %02X\n", annotate.opcode, annotate.dest, annotate.operand_1, annotate.operand_2);
 }
 

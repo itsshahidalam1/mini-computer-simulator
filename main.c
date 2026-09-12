@@ -2,22 +2,24 @@
 #include "compiler.h"
 #include "memory.h"
 #include "processor.h"
+#include "os.h"
 
 int main(int argc, char *argv[])
 {
 
-    compiler(argv[1], argv[2]);
+    start_os(argv[1],argv[2]);
+    
 
-    initialize(argv[2], argv[3]);
+    // compiler(argv[1], argv[2]);
 
-    reset();
+    // initialize(argv[2], argv[3]);
 
-    while (end_of_simulation == 0)
-    {
-        fetch();
-        decode();
-        execute();
-    }
+    // reset();
 
-    finalize();
+    // while (end_of_simulation == 0)
+    // {
+    //     fetch();
+    //     decode();
+    //     execute();
+    // }
 }

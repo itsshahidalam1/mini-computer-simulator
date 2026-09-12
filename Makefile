@@ -1,8 +1,11 @@
-run.exe: main.o compiler.o memory.o processor.o
-	gcc -o run.exe main.o compiler.o memory.o processor.o
+run.exe: main.o os.o compiler.o memory.o processor.o
+	gcc -o run.exe main.o os.o compiler.o memory.o processor.o
 
 main.o: main.c
 	gcc -c main.c
+
+os.o: os.c
+	gcc -c os.c
 
 compiler.o: compiler.c
 	gcc -c compiler.c
