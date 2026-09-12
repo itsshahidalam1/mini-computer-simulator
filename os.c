@@ -1,30 +1,51 @@
+
 #include <stdio.h>
+
 #include "compiler.h"
+
 #include "memory.h"
+
 #include "processor.h"
+
 #include "os.h"
+
 #include <stdlib.h>
+
 #include <string.h>
-#include <conio.h>
-#include <windows.h>
+
+#include <unistd.h>
+#include <termios.h>
+
+
 
 bool pid[256];
+
 bool procID[NP];
 
 struct PCB readyQueue[NP];
+
 int readyFront = 0;
+
 int readyRear = 0;
+
 int readyCount = 0;
 
 struct PCB waitingQueue[2 * NP];
+
 int waitingFront = 0;
+
 int waitingRear = 0;
+
 int waitingCount = 0;
 
 bool shell_enabled = true;
+
 char shell_buffer[256];
+
 int shell_index = 0;
+
 bool shell_prompt = false;
+
 bool shell_line_active = false;
 
 bool readyEnQ(struct PCB x)
@@ -33,7 +54,9 @@ bool readyEnQ(struct PCB x)
         return false;
 
     readyQueue[readyRear] = x;
+
     readyRear = (readyRear + 1) % NP;
+
     readyCount++;
 
     return true;
@@ -45,7 +68,9 @@ bool readyDeQ(struct PCB *x)
         return false;
 
     *x = readyQueue[readyFront];
+
     readyFront = (readyFront + 1) % NP;
+
     readyCount--;
 
     return true;
@@ -57,7 +82,9 @@ bool waitingEnQ(struct PCB x)
         return false;
 
     waitingQueue[waitingRear] = x;
+
     waitingRear = (waitingRear + 1) % (2 * NP);
+
     waitingCount++;
 
     return true;
@@ -69,7 +96,9 @@ bool waitingDeQ(struct PCB *x)
         return false;
 
     *x = waitingQueue[waitingFront];
+
     waitingFront = (waitingFront + 1) % (2 * NP);
+
     waitingCount--;
 
     return true;
@@ -82,6 +111,7 @@ int getPID()
         if (pid[i] == 0)
         {
             pid[i] = 1;
+
             return i;
         }
     }
@@ -96,6 +126,7 @@ int getProcessorID()
         if (procID[i] == 0)
         {
             procID[i] = 1;
+
             return i;
         }
     }
@@ -115,13 +146,17 @@ void loader(char *source, char *data)
     strcpy(newProcess.source, source);
 
     char programFileName[50] = "Program_";
+
     char pidStr[20];
 
-    itoa(newProcess.pid, pidStr, 10);
+    sprintf(pidStr, "%d", newProcess.pid);
+
     strcat(programFileName, pidStr);
+
     strcat(programFileName, ".byte");
 
     strcpy(newProcess.target, programFileName);
+
     strcpy(newProcess.data_file, data);
 
     newProcess.processor_id = getProcessorID();
@@ -129,12 +164,14 @@ void loader(char *source, char *data)
     if (newProcess.processor_id == -1)
     {
         waitingEnQ(newProcess);
+
         if (shell_line_active)
             printf("\n");
 
         printf("[SHELL] Process %d added to waiting queue.\n",
                newProcess.pid);
     }
+
     else
     {
         compiler(newProcess.source, newProcess.target);
@@ -159,13 +196,16 @@ void loader(char *source, char *data)
 void shell_reset()
 {
     shell_index = 0;
+
     shell_buffer[0] = '\0';
+
     shell_line_active = false;
 }
 
 bool shell_parse_and_load()
 {
     char source[100];
+
     char data[100];
 
     shell_buffer[shell_index] = '\0';
@@ -173,22 +213,29 @@ bool shell_parse_and_load()
     if (strcmp(shell_buffer, "exit") == 0)
     {
         shell_enabled = false;
+
         shell_reset();
+
         printf("[SHELL] Shell terminated.\n");
+
         return false;
     }
 
     if (shell_index == 0)
     {
         shell_prompt = true;
+
         return false;
     }
 
     if (sscanf(shell_buffer, "%99s %99s", source, data) != 2)
     {
         printf("[SHELL] Invalid command. Format: source.txt data.byte\n");
+
         shell_reset();
+
         shell_prompt = true;
+
         return false;
     }
 
@@ -199,15 +246,54 @@ bool shell_parse_and_load()
     loader(source, data);
 
     shell_reset();
+
     shell_prompt = true;
 
     return true;
+}
+
+static struct termios shell_old_termios;
+static bool shell_terminal_raw = false;
+
+void shell_terminal_restore()
+{
+    if (shell_terminal_raw)
+    {
+        tcsetattr(STDIN_FILENO, TCSANOW, &shell_old_termios);
+        shell_terminal_raw = false;
+    }
+}
+
+void shell_terminal_raw_mode()
+{
+    if (!shell_terminal_raw)
+    {
+        struct termios new_termios;
+
+        tcgetattr(STDIN_FILENO, &shell_old_termios);
+        new_termios = shell_old_termios;
+
+        new_termios.c_lflag &= ~(ICANON | ECHO);
+        new_termios.c_cc[VMIN] = 0;
+        new_termios.c_cc[VTIME] = 0;
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &new_termios);
+
+        shell_terminal_raw = true;
+    }
+}
+
+int shell_read_char(char *ch)
+{
+    return read(STDIN_FILENO, ch, 1) == 1;
 }
 
 void shell(bool blocking)
 {
     if (!shell_enabled)
         return;
+
+    shell_terminal_raw_mode();
 
     if (!shell_line_active)
     {
@@ -220,9 +306,15 @@ void shell(bool blocking)
     {
         while (shell_enabled)
         {
-            char ch = _getch();
+            char ch;
 
-            if (ch == '\r')
+            if (!shell_read_char(&ch))
+            {
+                usleep(10000);
+                continue;
+            }
+
+            if (ch == '\r' || ch == '\n')
             {
                 shell_buffer[shell_index] = '\0';
                 printf("\n");
@@ -232,6 +324,7 @@ void shell(bool blocking)
                     shell_enabled = false;
                     shell_reset();
                     printf("[SHELL] Shell terminated.\n");
+                    shell_terminal_restore();
                     return;
                 }
 
@@ -261,7 +354,7 @@ void shell(bool blocking)
                 return;
             }
 
-            if (ch == '\b')
+            if (ch == 127 || ch == '\b')
             {
                 if (shell_index > 0)
                 {
@@ -283,11 +376,14 @@ void shell(bool blocking)
         }
     }
 
-    while (_kbhit())
+    while (1)
     {
-        char ch = _getch();
+        char ch;
 
-        if (ch == '\r')
+        if (!shell_read_char(&ch))
+            break;
+
+        if (ch == '\r' || ch == '\n')
         {
             shell_buffer[shell_index] = '\0';
             printf("\n");
@@ -297,6 +393,7 @@ void shell(bool blocking)
                 shell_enabled = false;
                 shell_reset();
                 printf("[SHELL] Shell terminated.\n");
+                shell_terminal_restore();
                 return;
             }
 
@@ -326,7 +423,7 @@ void shell(bool blocking)
             return;
         }
 
-        if (ch == '\b')
+        if (ch == 127 || ch == '\b')
         {
             if (shell_index > 0)
             {
@@ -351,6 +448,7 @@ void shell(bool blocking)
 void scheduler()
 {
     struct PCB process;
+
     int n = readyCount;
 
     for (int loop = 0; loop < n; loop++)
@@ -360,7 +458,9 @@ void scheduler()
             for (int i = 0; i < TIME_SLICE; i++)
             {
                 fetch(process.processor_id);
+
                 decode();
+
                 execute(process.processor_id);
 
                 if (end_of_simulation[process.processor_id] == 1)
@@ -370,9 +470,11 @@ void scheduler()
             if (end_of_simulation[process.processor_id] == 1)
             {
                 finalize(process.processor_id, process.data_file);
+
                 resetIND(process.processor_id);
 
                 pid[process.pid] = 0;
+
                 procID[process.processor_id] = 0;
 
                 if (shell_line_active)
@@ -404,6 +506,7 @@ void scheduler()
                            process.processor_id);
                 }
             }
+
             else
             {
                 readyEnQ(process);
@@ -412,10 +515,12 @@ void scheduler()
     }
 
     /* Shell gets its own round-robin slot. */
+
     shell(false);
 
     /* Visualization delay. */
-    Sleep(500);
+
+    usleep(500000);
 }
 
 void start_os(char *source, char *data)
@@ -429,22 +534,31 @@ void start_os(char *source, char *data)
     reset();
 
     readyFront = 0;
+
     readyRear = 0;
+
     readyCount = 0;
 
     waitingFront = 0;
+
     waitingRear = 0;
+
     waitingCount = 0;
 
     shell_enabled = true;
+
     shell_reset();
+
     shell_prompt = false;
+
     shell_line_active = false;
 
     (void)source;
+
     (void)data;
 
     /* The first process is entered through the shell. */
+
     shell(true);
 
     while (shell_enabled || readyCount > 0 || waitingCount > 0)
@@ -453,10 +567,14 @@ void start_os(char *source, char *data)
         {
             scheduler();
         }
+
         else
         {
             shell_prompt = true;
+
             shell(true);
         }
     }
+
+    shell_terminal_restore();
 }

@@ -1,5 +1,5 @@
-run.exe: main.o os.o compiler.o memory.o processor.o
-	gcc -o run.exe main.o os.o compiler.o memory.o processor.o
+run: main.o os.o compiler.o memory.o processor.o
+	gcc -o run main.o os.o compiler.o memory.o processor.o
 
 main.o: main.c
 	gcc -c main.c
@@ -17,4 +17,4 @@ processor.o: processor.c
 	gcc -c processor.c
 
 clean:
-	del *.o run.exe
+	rm -f *.o run

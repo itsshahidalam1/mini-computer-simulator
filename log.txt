@@ -80,326 +80,360 @@ token count: 1
 =
 x2
 token count: 3
-Compiling Memory Read
-Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling multiplication
-Compiling Vector Write Instruction
-Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
-Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
-Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling multiplication
-Compiling Vector Write Instruction
-Compiling Data movement
+Compiling Branch Instruction
 Compiling Subtraction
-Compiling Branch Instruction
-Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
-Compiling Memory Write
-Compiling Memory Read
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling multiplication
 Compiling Vector Write Instruction
-Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
-Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
-Compiling Memory Write
-Compiling Memory Read
-Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
 Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
 Compiling Data movement
-Compiling Data movement
-Compiling Vector Read Instruction
-Compiling Data movement
-Compiling Vector Read Instruction
+Compiling Vector Write Instruction
 Compiling multiplication
-Compiling Vector Write Instruction
+Compiling Vector Read Instruction
 Compiling Data movement
-Compiling Subtraction
-Compiling Branch Instruction
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
 Compiling Memory Read
-Compiling Addition
-Compiling Addition
-Compiling Addition
-Compiling Branch Instruction
 Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
+Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
+Compiling Data movement
+Compiling Vector Write Instruction
+Compiling multiplication
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
+Compiling Memory Read
+Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
+Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
+Compiling Data movement
+Compiling Vector Write Instruction
+Compiling multiplication
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
+Compiling Memory Read
+Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
+Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
+Compiling Data movement
+Compiling Vector Write Instruction
+Compiling multiplication
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
+Compiling Memory Read
+Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
+Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
+Compiling Data movement
+Compiling Vector Write Instruction
+Compiling multiplication
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
+Compiling Memory Read
+Compiling Memory Write
+Compiling Branch Instruction
+Compiling Addition
+Compiling Addition
+Compiling Addition
+Compiling Memory Read
+Compiling Branch Instruction
+Compiling Subtraction
+Compiling Data movement
+Compiling Vector Write Instruction
+Compiling multiplication
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Vector Read Instruction
+Compiling Data movement
+Compiling Data movement
+Compiling Memory Read
